@@ -7,6 +7,7 @@ Cobol subprograms which can be used for certain HLASM instructions. For example,
 In this project, Cobol subroutines are bundled, which can perform HLASM (Assembler) instructions in Cobol. These programs are used to support the replacement of assembler programs.
 
 ## Documentation for subprograms
+- [BITOPS](https://github.com/derDennis99/ASM2COBOL/blob/main/BITOPS/README.md)
 
 ## Authors
 
