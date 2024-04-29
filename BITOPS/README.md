@@ -33,13 +33,13 @@ The program produces three types of output:
 ## Structure
 BITOPS/
 │
-├── bitops.cob (Main COBOL program)
+├── bitops.cbl (Main COBOL program)
 │
 ├── BITOPS.txt (Transfer areas)
 │
 └── README.md (Documentation)
 
-## Example
+## Examples
 ```cobol```
 
 ## Compilation and Execution
