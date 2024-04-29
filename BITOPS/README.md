@@ -9,13 +9,13 @@ BITOPS is a program designed for performing bitwise operations on binary data. I
 
 ## Usage
 The program accepts two inputs:
-1. **Input Data (I-C-INPUT)**: The binary data on which the operation will be performed.
-2. **Mask (I-C-MASK)**: The binary mask used for the operation.
+1. **Input Data (I-C-INPUT)**: The hexadecimal data in text format on which the operation will be performed. For example, instead of "0", "F0" should be provided.
+2. **Mask (I-C-MASK)**: The hexadecimal mask in text format used for the operation. For example, instead of "0", "F0" should be provided.
 
 ## Instructions
 The program supports two types of operations:
-- **OI (Or Inclusive)**: Sets the output bit to 1 if either the input data bit or the mask bit is 1.
-- **NI (Not Inclusive)**: Sets the output bit to 1 only if both the input data bit and the mask bit are 1.
+- **OI (Or Immediate)**: Performs a bitwise OR operation between the input data and the mask.
+- **NI (Not Immediate)**: Performs a bitwise AND operation between the input data and the mask.
 
 ## Output
 The program produces three types of output:
@@ -30,17 +30,56 @@ The program produces three types of output:
 4. **Processing**: Performs the bitwise operation based on the specified instruction.
 5. **Output**: Converts the binary result to hexadecimal and character formats for output.
 
-## Structure
-BITOPS/
-│
-├── bitops.cbl (Main COBOL program)
-│
-├── BITOPS.txt (Transfer areas)
-│
-└── README.md (Documentation)
-
 ## Examples
-```cobol```
+```
+* Example 1
+MOVE 'A1'             TO I-C-INPUT
+MOVE 'E0'             TO I-C-MASK
+SET I-B-INSTRUCT-OI   TO TRUE
+
+CALL 'BITOPS' USING BITOPS-PGM
+
+* Results (N = Null):
+* TXT: E1000000
+* HEX: ÷NNN
+* BIN: 11100001000000000000000000000000
+
+* Example 2
+MOVE '7C'             TO I-C-INPUT
+MOVE '6E'             TO I-C-MASK
+SET I-B-INSTRUCT-NI   TO TRUE
+
+CALL 'BITOPS' USING BITOPS-PGM
+
+* Results (N = Null):
+* TXT: 6C000000
+* HEX: %NNN
+* BIN: 01101100000000000000000000000000
+
+* Example 3
+MOVE '1234'           TO I-C-INPUT
+MOVE '5678'           TO I-C-MASK
+SET I-B-INSTRUCT-NI   TO TRUE
+
+CALL 'BITOPS' USING BITOPS-PGM
+
+* Results (N = Null):
+* TXT: 12300000
+* HEX: NN
+* BIN: 00010010001100000000000000000000
+
+* Example 4
+MOVE '1234'           TO I-C-INPUT
+MOVE 'E0'             TO I-C-MASK
+SET I-B-INSTRUCT-NI   TO TRUE
+
+CALL 'BITOPS' USING BITOPS-PGM
+
+* Results (N = Null):
+* TXT: 00200000
+* HEX: NN
+* BIN: 00000000001000000000000000000000
+```
 
 ## Compilation and Execution
 1. Compile the program using a COBOL compiler.
