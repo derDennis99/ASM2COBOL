@@ -163,20 +163,24 @@
 
        A02-INPUT-CHECK SECTION.
       *    Check is transfer length divisible by 2?
-           IF FUNCTION MOD(W1-I-BYTES-LEN, 2) NOT = ZERO THEN
-              SET O-B-RC-INPUT-LENGTH-ERROR     TO TRUE
+           IF FUNCTION MOD(W1-I-BYTES-LEN, 2) 
+                                      NOT = ZERO THEN
+              SET O-B-RC-INPUT-LENGTH-ERROR     
+                                         TO TRUE
               PERFORM B99-END
            END-IF
 
            IF W1-I-BYTES-LEN < W1-I-MASK-LEN
            THEN
-              SET O-B-RC-INPUT-LENGTH-ERROR     TO TRUE
+              SET O-B-RC-INPUT-LENGTH-ERROR     
+                                         TO TRUE
               PERFORM B99-END
            END-IF
 
       *    Check the set instruction. Program compatible?
            IF NOT I-B-INSTRUCT-VALID
-              SET O-B-RC-INSTRCT-UNKNOWN        TO TRUE
+              SET O-B-RC-INSTRCT-UNKNOWN        
+                                         TO TRUE
               PERFORM B99-END
            END-IF
       
@@ -207,7 +211,8 @@
                                   REPLACING ALL SPACES
                                          BY LOW-VALUE
 
-           MOVE FUNCTION BIT-OF(W1-H-MASK) TO W1-BI-MASK
+           MOVE FUNCTION BIT-OF(W1-H-MASK) 
+                                         TO W1-BI-MASK
 
            CONTINUE.
 
