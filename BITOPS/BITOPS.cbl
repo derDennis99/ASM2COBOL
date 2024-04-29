@@ -66,10 +66,11 @@
       *    ****************
       *    * INPUT FIELDS *
       *    ****************
-           05 I-C-INPUT                  PIC X(8).
-           05 I-C-MASK                   PIC X(8).
+           05 I-INPUT.
+           10 I-C-INPUT                  PIC X(8).
+           10 I-C-MASK                   PIC X(8).
 
-           05 I-C-INSTRUCT               PIC X(2).
+           10 I-C-INSTRUCT               PIC X(2).
            88 I-B-INSTRUCT-VALID                     VALUES   'OI',
                                                               'NI'.
            88 I-B-INSTRUCT-OI                        VALUE    'OI'.
@@ -78,11 +79,12 @@
       *    *****************
       *    * OUTPUT FIELDS *
       *    *****************
-           05 O-C-RESULT                 PIC X(8).
-           05 O-H-RESULT                 PIC X(4).
-           05 O-BI-RESULT                PIC X(32).
+           05 O-OUTPUT.
+           10 O-C-RESULT                 PIC X(8).
+           10 O-H-RESULT                 PIC X(4).
+           10 O-BI-RESULT                PIC X(32).
 
-           05 O-N-RETURNCODE             PIC 99.
+           10 O-N-RETURNCODE             PIC 99.
            88 O-B-RC-IO                              VALUE 00.
            88 O-B-RC-INPUT-LENGTH-ERROR              VALUE 06.
            88 O-B-RC-INSTRCT-UNKNOWN                 VALUE 10.
@@ -117,40 +119,40 @@
 
        A01-INIT SECTION.
 
-           SET O-B-RC-IO            TO TRUE
+           SET O-B-RC-IO                 TO TRUE
 
       *    -------------------------------------------------------------
       *    Calculate length content of input
       *    -------------------------------------------------------------
       *    I-C-INPUT
-           MOVE 1               TO W1-I2
-           MOVE ZERO            TO W1-I-BYTES-LEN
-           PERFORM UNTIL W1-I2 > LENGTH OF I-C-INPUT
-           OR I-C-INPUT(W1-I2:1) = SPACE
-              ADD 1 TO W1-I2
-              ADD 1 TO W1-I-BYTES-LEN
+           MOVE 1                        TO W1-I2
+           MOVE ZERO                     TO W1-I-BYTES-LEN
+           PERFORM UNTIL W1-I2            > LENGTH OF I-C-INPUT
+           OR I-C-INPUT(W1-I2:1)          = SPACE
+              ADD 1                      TO W1-I2
+              ADD 1                      TO W1-I-BYTES-LEN
            END-PERFORM
 
       *    I-C-MASK
-           MOVE 1               TO W1-I2
-           MOVE ZERO            TO W1-I-MASK-LEN
-           PERFORM UNTIL W1-I2 > LENGTH OF I-C-MASK
-           OR I-C-MASK (W1-I2:1) = SPACE
-              ADD 1 TO W1-I2
-              ADD 1 TO W1-I-MASK-LEN
+           MOVE 1                        TO W1-I2
+           MOVE ZERO                     TO W1-I-MASK-LEN
+           PERFORM UNTIL W1-I2            > LENGTH OF I-C-MASK
+           OR I-C-MASK (W1-I2:1)          = SPACE
+              ADD 1                      TO W1-I2
+              ADD 1                      TO W1-I-MASK-LEN
            END-PERFORM
 
-           COMPUTE W1-BITS-COUNT = W1-I-BYTES-LEN / 2 * 8
+           COMPUTE W1-BITS-COUNT          = W1-I-BYTES-LEN / 2 * 8
 
       *    -------------------------------------------------------------
       *    Calculate maximum lengths
       *    -------------------------------------------------------------
-           MOVE LENGTH OF I-C-INPUT            TO W1-MAX-TXT-LEN
+           MOVE LENGTH OF I-C-INPUT      TO W1-MAX-TXT-LEN
 
            IF FUNCTION MOD(W1-MAX-TXT-LEN, 2) NOT = ZERO
-           OR LENGTH OF I-C-INPUT NOT = LENGTH OF I-C-MASK
+           OR LENGTH OF I-C-INPUT     NOT = LENGTH OF I-C-MASK
            THEN
-              SET O-B-RC-VAR-LENGTH-ERROR      TO TRUE
+              SET O-B-RC-VAR-LENGTH-ERROR TO TRUE
               PERFORM B99-END
            END-IF
 
@@ -183,27 +185,27 @@
        A03-PREPARE-INPUT SECTION.
       *    I-C-INPUT-> W1-H-INPUT -> W1-BI-INPUT
            MOVE FUNCTION HEX-TO-CHAR (I-C-INPUT(1:W1-I-BYTES-LEN))
-                                TO W1-H-INPUT
+                                         TO W1-H-INPUT
 
-           COMPUTE W1-START-I = W1-MAX-HEX-LEN
-                              - (W1-I-BYTES-LEN / 2)
+           COMPUTE W1-START-I             = W1-MAX-HEX-LEN
+                                          - (W1-I-BYTES-LEN / 2)
 
            INSPECT W1-H-INPUT(1:W1-START-I)
-                                REPLACING ALL SPACES
-                                BY LOW-VALUE
+                                  REPLACING ALL SPACES
+                                         BY LOW-VALUE
 
            MOVE FUNCTION BIT-OF(W1-H-INPUT) TO W1-BI-INPUT
 
       *    I-C-MASK -> W1-H-MASK -> W1-BI-MASK
            MOVE FUNCTION HEX-TO-CHAR (I-C-MASK(1:W1-I-MASK-LEN))
-                                TO W1-H-MASK
+                                         TO W1-H-MASK
 
-           COMPUTE W1-START-I = W1-MAX-HEX-LEN
-                              - (W1-I-MASK-LEN / 2)
+           COMPUTE W1-START-I             = W1-MAX-HEX-LEN
+                                          - (W1-I-MASK-LEN / 2)
 
            INSPECT W1-H-MASK(1:W1-START-I)
-                                REPLACING ALL SPACES
-                                BY LOW-VALUE
+                                  REPLACING ALL SPACES
+                                         BY LOW-VALUE
 
            MOVE FUNCTION BIT-OF(W1-H-MASK) TO W1-BI-MASK
 
@@ -211,13 +213,13 @@
 
        B01-PROCESS SECTION.
 
-           COMPUTE W1-START-LOOP-I = W1-MAX-BIN-LEN
-                                   - W1-BITS-COUNT
-                                   + 1
+           COMPUTE W1-START-LOOP-I        = W1-MAX-BIN-LEN
+                                          - W1-BITS-COUNT
+                                          + 1
 
-           MOVE 1                  TO W1-RES-I
+           MOVE 1                        TO W1-RES-I
 
-           PERFORM VARYING W1-I1 FROM W1-START-LOOP-I BY 1
+           PERFORM VARYING W1-I1       FROM W1-START-LOOP-I BY 1
            UNTIL W1-I1> W1-MAX-BIN-LEN
 
               EVALUATE TRUE
@@ -230,12 +232,12 @@
                        (W1-BI-INPUT(W1-I1:1)           = '1'
                        AND W1-BI-MASK(W1-I1:1)         = '1'))
       *          **********
-                    MOVE 1         TO W1-BI-RESULT(W1-RES-I:1)
+                    MOVE 1               TO W1-BI-RESULT(W1-RES-I:1)
                  WHEN OTHER
-                    MOVE 0         TO W1-BI-RESULT(W1-RES-I:1)
+                    MOVE 0               TO W1-BI-RESULT(W1-RES-I:1)
               END-EVALUATE
 
-              ADD 1                TO W1-RES-I
+              ADD 1                      TO W1-RES-I
 
            END-PERFORM
 
@@ -244,9 +246,11 @@
        B99-END SECTION.
 
       *    Write result to output
-           INSPECT W1-BI-RESULT REPLACING ALL LOW-VALUES BY ZERO
-           MOVE W1-BI-RESULT                         TO O-BI-RESULT
-           MOVE FUNCTION BIT-TO-CHAR(W1-BI-RESULT)   TO O-H-RESULT
-           MOVE FUNCTION HEX-OF(O-H-RESULT)          TO O-C-RESULT
+           INSPECT W1-BI-RESULT   REPLACING ALL LOW-VALUES BY ZERO
+           MOVE W1-BI-RESULT             TO O-BI-RESULT
+           MOVE FUNCTION BIT-TO-CHAR(W1-BI-RESULT)   
+                                         TO O-H-RESULT
+           MOVE FUNCTION HEX-OF(O-H-RESULT)         
+                                         TO O-C-RESULT
 
            GOBACK.
