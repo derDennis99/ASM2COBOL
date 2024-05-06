@@ -1,0 +1,26 @@
+ 01 BITOPS-PGM.
+*    ****************
+*    * INPUT FIELDS *
+*    ****************
+     05 I-C-INPUT                  PIC X(8).
+     05 I-C-MASK                   PIC X(8).
+
+     05 I-C-INSTRUCT               PIC X(2).
+     88 I-B-INSTRUCT-VALID                     VALUES   'OI',
+                                                        'NI'.
+     88 I-B-INSTRUCT-OI                        VALUE    'OI'.
+     88 I-B-INSTRUCT-NI                        VALUE    'NI'.
+
+*    *****************
+*    * OUTPUT FIELDS *
+*    *****************
+     05 O-C-RESULT                 PIC X(8).
+     05 O-H-RESULT                 PIC X(4).
+     05 O-BI-RESULT                PIC X(32).
+
+     05 O-N-RETURNCODE             PIC 99.
+     88 O-B-RC-IO                              VALUE 00.
+     88 O-B-RC-INPUT-LENGTH-ERROR              VALUE 06.
+     88 O-B-RC-INSTRCT-UNKNOWN                 VALUE 10.
+     88 O-B-RC-VAR-LENGTH-ERROR                VALUE 12.
+*-----------------------------------------------------------------
