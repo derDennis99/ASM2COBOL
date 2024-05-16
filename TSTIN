@@ -1,0 +1,9 @@
+* Test cases for TSTPRG
+*
+* Test for BITOPS:
+*1234 12345678 12345678 12345678
+*FUNC|INPUT   |MASK HEX|RESULT HEX
+   OI A1       E0       E1
+   NI 7C       6E       6C
+   NI 1234     5678     1230
+   NI 1234     E0       0020
