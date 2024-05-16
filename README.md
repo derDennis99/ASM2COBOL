@@ -32,6 +32,9 @@ The input file TSTIN contains test cases for the TSTPRG program. Each test case 
 FUNC: The function to be tested (e.g., OI for Or Immediate, NI for And Immediate).
 Subprogram-Specific Fields: Additional fields required for the subprogram being tested. These fields can vary depending on the subprogram.
 
+### TSTJCL
+The JCL script, named TSTJCL, is used to compile and run the TSTPRG program and its subprograms. The script is designed to run on an IBM test system.
+
 ## Authors
 
 Contributors names and contact info
