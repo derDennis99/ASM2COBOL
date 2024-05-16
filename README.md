@@ -9,6 +9,29 @@ In this project, Cobol subroutines are bundled, which can perform HLASM (Assembl
 ## Documentation for subprograms
 - [BITOPS](https://github.com/derDennis99/ASM2COBOL/tree/main/BITOPS)
 
+## TSTPRG Documentation
+### Overview
+The TSTPRG program serves as the main program for testing subprograms. It reads an input file containing test cases for the subprograms and their expected results.
+
+### Input File
+The input file TSTIN contains test cases for the TSTPRG program. Each test case begins with a function identifier (FUNC) and is followed by fields specific to the subprogram being tested. The structure of the input data can vary depending on the subprogram, but the FUNC field remains consistent across all test cases.
+
+### Example Input File TSTIN
+```
+* Test cases for TSTPRG
+*
+* Test for BITOPS:
+*FUNC|INPUT   |MASK HEX|RESULT HEX
+   OI A1       E0       E1
+   NI 7C       6E       6C
+   NI 1234     5678     1230
+   NI 1234     E0       0020
+```
+
+### General Structure
+FUNC: The function to be tested (e.g., OI for Or Immediate, NI for And Immediate).
+Subprogram-Specific Fields: Additional fields required for the subprogram being tested. These fields can vary depending on the subprogram.
+
 ## Authors
 
 Contributors names and contact info
